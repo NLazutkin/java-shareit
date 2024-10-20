@@ -1,23 +1,29 @@
 package ru.practicum.shareit.booking.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.enums.Statuses;
 
 import java.time.LocalDateTime;
 
 @Data
+@EqualsAndHashCode(of = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingDto {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+public class UpdateBookingRequest {
     Long id;
     LocalDateTime start;
     LocalDateTime end;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long itemId;
     Statuses status;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long bookerId; // userId
+
+    public boolean hasStart() {
+        return this.start != null;
+    }
+
+    public boolean hasEnd() {
+        return this.end != null;
+    }
 }
