@@ -16,10 +16,11 @@ import java.util.Collection;
 @RequestMapping(path = "/bookings")
 public class BookingController {
     private final BookingServiceImpl bookingService;
+    private final String path = "/{id}";
 
-    @GetMapping("/{id}")
+    @GetMapping(path)
     public BookingDto findItem(@PathVariable("id") Long itemId) {
-        return bookingService.findItem(itemId);
+        return bookingService.findBooking(itemId);
     }
 
     @GetMapping
@@ -38,7 +39,7 @@ public class BookingController {
         return bookingService.update(newItem);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path)
     public boolean delete(@PathVariable("id") Long itemId) {
         return bookingService.delete(itemId);
     }

@@ -30,7 +30,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto create(NewBookingRequest request) {
-        log.debug("Создаем запись о вещи");
+        log.debug("Создаем запись о бронировании");
 
         Booking booking = BookingMapper.mapToBooking(request);
         booking = bookingStorage.create(booking);
@@ -39,22 +39,23 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto findItem(Long bookingId) {
+    public BookingDto findBooking(Long bookingId) {
+        log.debug("Ищем бронирование с ID {}", bookingId);
         return BookingMapper.mapToBookingDto(bookingStorage.findBooking(bookingId));
     }
 
     @Override
     public Collection<BookingDto> findAll() {
-        log.debug("Получаем записи о всех вещах");
+        log.debug("Получаем записи о всех бронированиях");
         return bookingStorage.getBookings().stream().map(BookingMapper::mapToBookingDto).collect(Collectors.toList());
     }
 
     @Override
     public BookingDto update(UpdateBookingRequest request) {
-        log.debug("Обновляем данные о вещи");
+        log.debug("Обновляем данные о бронировании");
 
         if (request.getId() == null) {
-            throw new ValidationException("Id вещи должен быть указан");
+            throw new ValidationException("ID бронирования должен быть указан");
         }
 
         Booking updatedItem = BookingMapper.updateBookingFields(bookingStorage.findBooking(request.getId()), request);

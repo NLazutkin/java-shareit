@@ -16,8 +16,9 @@ import java.util.Collection;
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
     private final ItemRequestServiceImpl itemRequestService;
+    private final String path = "/{id}";
 
-    @GetMapping("/{id}")
+    @GetMapping(path)
     public ItemRequestDto findItemRequest(@PathVariable("id") Long itemId) {
         return itemRequestService.findItemRequest(itemId);
     }
@@ -38,7 +39,7 @@ public class ItemRequestController {
         return itemRequestService.update(newItemRequest);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path)
     public boolean delete(@PathVariable("id") Long itemId) {
         return itemRequestService.delete(itemId);
     }

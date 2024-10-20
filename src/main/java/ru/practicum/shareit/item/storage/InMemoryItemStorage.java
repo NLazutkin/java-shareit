@@ -65,7 +65,7 @@ public class InMemoryItemStorage implements ItemStorage {
 
     @Override
     public Item update(Item newItem) {
-        log.trace("Данные пользователя {} обновлены!", newItem.getName());
+        log.trace("Данные вещи {} обновлены!", newItem.getName());
         items.put(newItem.getId(), newItem);
         return newItem;
     }

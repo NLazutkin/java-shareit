@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDto> findItemsForTenant(Long ownerId, String text) {
-        log.debug("Получаем записи о всех вещах которые ищет арендатор по ключевым символа {}", text);
+        log.debug("Получаем записи о всех вещах которые ищет арендатор по ключевым символам {}", text);
         if (StringUtils.isBlank(text)) {
             return new ArrayList<>();
         }
@@ -72,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto update(Long itemId, UpdateItemRequest request, Long ownerId) {
-        log.debug("Обновляем данные о вещи");
+        log.debug("Обновляем данные о вещи ID {}", itemId);
 
         Item item = itemStorage.findItem(itemId);
 

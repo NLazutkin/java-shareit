@@ -16,6 +16,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
+    private final String path = "/{id}";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -23,7 +24,7 @@ public class UserController {
         return userService.create(user);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path)
     public UserDto findUser(@PathVariable("id") Long userId) {
         return userService.findUser(userId);
     }
@@ -33,13 +34,13 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(path)
     public UserDto update(@PathVariable("id") Long userId,
                           @Valid @RequestBody UpdateUserRequest newUser) {
         return userService.update(userId, newUser);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path)
     public boolean delete(@PathVariable("id") Long userId) {
         return userService.delete(userId);
     }

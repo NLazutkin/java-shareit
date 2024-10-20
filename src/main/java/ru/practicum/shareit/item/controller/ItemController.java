@@ -16,6 +16,7 @@ import java.util.Collection;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
+    private final String path = "/{id}";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -24,7 +25,7 @@ public class ItemController {
         return itemService.create(userId, item);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path)
     public ItemDto findItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                             @PathVariable("id") Long itemId) {
         return itemService.findItem(ownerId, itemId);
@@ -41,14 +42,14 @@ public class ItemController {
         return itemService.findAll(ownerId);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(path)
     public ItemDto update(@PathVariable("id") Long itemId,
                           @Valid @RequestBody UpdateItemRequest newItem,
                           @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         return itemService.update(itemId, newItem, ownerId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path)
     public boolean delete(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                           @PathVariable("id") Long itemId) {
         return itemService.delete(ownerId, itemId);

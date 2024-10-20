@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Обновляем данные пользователя");
 
         if (userId == null) {
-            throw new ValidationException("Id пользователя должен быть указан");
+            throw new ValidationException("ID пользователя должен быть указан");
         }
 
         if (userStorage.isUserWithEmailExist(request.getEmail())) {
