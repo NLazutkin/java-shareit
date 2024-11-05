@@ -12,7 +12,7 @@ public class ItemDto {
     Long id;
     String name;
     String description;
-    Boolean available = Boolean.FALSE;
+    Boolean available;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long ownerId;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

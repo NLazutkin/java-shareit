@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.enums.Statuses;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +17,7 @@ public class BookingDto {
     Long id;
     LocalDateTime start;
     LocalDateTime end;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Long itemId;
+    ItemDto item;
     Statuses status;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Long bookerId; // userId
+    UserDto booker;
 }
