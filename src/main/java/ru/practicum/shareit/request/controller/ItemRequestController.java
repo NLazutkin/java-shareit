@@ -19,8 +19,8 @@ public class ItemRequestController {
     private final String path = "/{id}";
 
     @GetMapping(path)
-    public ItemRequestDto findItemRequest(@PathVariable("id") Long itemId) {
-        return itemRequestService.findItemRequest(itemId);
+    public ItemRequestDto findItemRequest(@PathVariable("id") Long requestId) {
+        return itemRequestService.findItemRequest(requestId);
     }
 
     @GetMapping
@@ -30,17 +30,19 @@ public class ItemRequestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemRequestDto create(@Valid @RequestBody NewRequest itemRequest) {
-        return itemRequestService.create(itemRequest);
+    public ItemRequestDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @Valid @RequestBody NewRequest itemRequest) {
+        return itemRequestService.create(userId, itemRequest);
     }
 
     @PutMapping
-    public ItemRequestDto update(@Valid @RequestBody UpdateRequest newItemRequest) {
-        return itemRequestService.update(newItemRequest);
+    public ItemRequestDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @Valid @RequestBody UpdateRequest newItemRequest) {
+        return itemRequestService.update(userId, newItemRequest);
     }
 
     @DeleteMapping(path)
-    public boolean delete(@PathVariable("id") Long itemId) {
-        return itemRequestService.delete(itemId);
+    public void delete(@PathVariable("id") Long requestId) {
+        itemRequestService.delete(requestId);
     }
 }

@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.storage;
 
-import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.entity.Booking;
 
 import java.util.Collection;
 

@@ -5,7 +5,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.entity.User;
 
 import java.util.*;
 
@@ -51,13 +51,13 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public boolean delete(Long userId) {
+    public Boolean delete(Long userId) {
         users.remove(userId);
         return Optional.ofNullable(users.get(userId)).isPresent();
     }
 
     @Override
-    public boolean isUserWithEmailExist(String eMail) {
+    public Boolean isUserWithEmailExist(String eMail) {
         return users.values().stream().anyMatch(userFromMemory -> userFromMemory.getEmail().equals(eMail));
     }
 }

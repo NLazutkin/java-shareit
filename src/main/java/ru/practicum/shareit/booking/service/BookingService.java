@@ -7,13 +7,17 @@ import ru.practicum.shareit.booking.dto.UpdateBookingRequest;
 import java.util.Collection;
 
 public interface BookingService {
-    BookingDto create(NewBookingRequest request);
+    BookingDto create(Long userId, NewBookingRequest request);
 
-    BookingDto findBooking(Long bookingId);
+    BookingDto findBooking(Long bookingId, Long userId);
 
-    Collection<BookingDto> findAll();
+    Collection<BookingDto> findAllBookingsByUser(Long userId, String state);
+
+    Collection<BookingDto> findAllBookingsByOwnerItems(Long userId, String state);
 
     BookingDto update(UpdateBookingRequest request);
 
-    boolean delete(Long bookingId);
+    void delete(Long bookingId);
+
+    BookingDto approveBooking(Long bookingId, Long userId, Boolean approved);
 }

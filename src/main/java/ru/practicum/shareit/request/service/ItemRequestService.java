@@ -7,13 +7,13 @@ import ru.practicum.shareit.request.dto.UpdateRequest;
 import java.util.Collection;
 
 public interface ItemRequestService {
-    ItemRequestDto create(NewRequest request);
+    ItemRequestDto create(Long userId, NewRequest request);
 
     ItemRequestDto findItemRequest(Long itemRequestId);
 
     Collection<ItemRequestDto> findAll();
 
-    ItemRequestDto update(UpdateRequest request);
+    ItemRequestDto update(Long user, UpdateRequest request);
 
-    boolean delete(Long itemRequestId);
+    void delete(Long itemRequestId);
 }

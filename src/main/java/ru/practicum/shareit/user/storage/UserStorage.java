@@ -1,6 +1,6 @@
 package ru.practicum.shareit.user.storage;
 
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.entity.User;
 
 import java.util.Collection;
 
@@ -13,7 +13,7 @@ public interface UserStorage {
 
     User update(User newUser);
 
-    boolean delete(Long id);
+    Boolean delete(Long id);
 
-    boolean isUserWithEmailExist(String eMail);
+    Boolean isUserWithEmailExist(String eMail);
 }
