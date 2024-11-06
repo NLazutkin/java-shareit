@@ -16,31 +16,48 @@ import java.util.Collection;
 @RequestMapping(path = "/bookings")
 public class BookingController {
     private final BookingServiceImpl bookingService;
-    private final String path = "/{id}";
+    private final String id = "/{booking-id}";
+    private final String owner = "/owner";
 
-    @GetMapping(path)
-    public BookingDto findItem(@PathVariable("id") Long itemId) {
-        return bookingService.findBooking(itemId);
+    @GetMapping(id)
+    public BookingDto findBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                  @PathVariable("booking-id") Long bookingId) {
+        return bookingService.findBooking(bookingId, userId);
     }
 
     @GetMapping
-    public Collection<BookingDto> findAll() {
-        return bookingService.findAll();
+    public Collection<BookingDto> findAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                        @RequestParam(name = "state", defaultValue = "ALL") String state) {
+        return bookingService.findAllBookingsByUser(userId, state);
+    }
+
+    @GetMapping(owner)
+    public Collection<BookingDto> findAllBookingsByOwnerItems(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                              @RequestParam(name = "state", defaultValue = "ALL") String state) {
+        return bookingService.findAllBookingsByOwnerItems(userId, state);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingDto create(@Valid @RequestBody NewBookingRequest item) {
-        return bookingService.create(item);
+    public BookingDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
+                             @Valid @RequestBody NewBookingRequest booking) {
+        return bookingService.create(userId, booking);
     }
 
-    @PutMapping
-    public BookingDto update(@Valid @RequestBody UpdateBookingRequest newItem) {
-        return bookingService.update(newItem);
+    @PutMapping(id)
+    public BookingDto update(@Valid @RequestBody UpdateBookingRequest newBooking) {
+        return bookingService.update(newBooking);
     }
 
-    @DeleteMapping(path)
-    public boolean delete(@PathVariable("id") Long itemId) {
-        return bookingService.delete(itemId);
+    @DeleteMapping(id)
+    public void delete(@PathVariable("booking-id") Long bookingId) {
+        bookingService.delete(bookingId);
+    }
+
+    @PatchMapping(id)
+    public BookingDto approveBooking(@PathVariable("booking-id") Long bookingId,
+                                     @RequestHeader("X-Sharer-User-Id") Long userId,
+                                     @RequestParam(name = "approved", defaultValue = "false") Boolean approved) {
+        return bookingService.approveBooking(bookingId, userId, approved);
     }
 }

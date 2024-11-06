@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingDto {
+public class BookingApproveDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
     LocalDateTime start;

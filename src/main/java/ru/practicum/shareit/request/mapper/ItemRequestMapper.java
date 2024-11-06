@@ -5,7 +5,8 @@ import lombok.NoArgsConstructor;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.NewRequest;
 import ru.practicum.shareit.request.dto.UpdateRequest;
-import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.entity.ItemRequest;
+import ru.practicum.shareit.user.entity.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemRequestMapper {
@@ -14,22 +15,22 @@ public final class ItemRequestMapper {
         ItemRequestDto dto = new ItemRequestDto();
         dto.setId(itemRequest.getId());
         dto.setDescription(itemRequest.getDescription());
-        dto.setRequestorId(itemRequest.getRequestorId());
+        dto.setRequestorId(itemRequest.getRequestor().getId());
         dto.setCreated(itemRequest.getCreated());
 
         return dto;
     }
 
-    public static ItemRequest mapToItemRequest(NewRequest request) {
+    public static ItemRequest mapToItemRequest(NewRequest request, User findUser) {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setDescription(request.getDescription());
-        itemRequest.setRequestorId(request.getRequestorId());
+        itemRequest.setRequestor(findUser);
         itemRequest.setCreated(request.getCreated());
 
         return itemRequest;
     }
 
-    public static ItemRequest updateItemFields(ItemRequest itemRequest, UpdateRequest request) {
+    public static ItemRequest updateItemFields(ItemRequest itemRequest, UpdateRequest request, User findUser) {
         itemRequest.setDescription(request.getDescription());
 
         return itemRequest;

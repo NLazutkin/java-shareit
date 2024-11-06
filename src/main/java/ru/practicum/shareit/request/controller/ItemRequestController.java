@@ -16,11 +16,11 @@ import java.util.Collection;
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
     private final ItemRequestServiceImpl itemRequestService;
-    private final String path = "/{id}";
+    private final String id = "/{request-id}";
 
-    @GetMapping(path)
-    public ItemRequestDto findItemRequest(@PathVariable("id") Long itemId) {
-        return itemRequestService.findItemRequest(itemId);
+    @GetMapping(id)
+    public ItemRequestDto findItemRequest(@PathVariable("request-id") Long requestId) {
+        return itemRequestService.findItemRequest(requestId);
     }
 
     @GetMapping
@@ -30,17 +30,20 @@ public class ItemRequestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemRequestDto create(@Valid @RequestBody NewRequest itemRequest) {
-        return itemRequestService.create(itemRequest);
+    public ItemRequestDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @Valid @RequestBody NewRequest itemRequest) {
+        return itemRequestService.create(userId, itemRequest);
     }
 
-    @PutMapping
-    public ItemRequestDto update(@Valid @RequestBody UpdateRequest newItemRequest) {
-        return itemRequestService.update(newItemRequest);
+    @PutMapping(id)
+    public ItemRequestDto update(@PathVariable("request-id") Long requestId,
+                                 @RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @Valid @RequestBody UpdateRequest newItemRequest) {
+        return itemRequestService.update(requestId, userId, newItemRequest);
     }
 
-    @DeleteMapping(path)
-    public boolean delete(@PathVariable("id") Long itemId) {
-        return itemRequestService.delete(itemId);
+    @DeleteMapping(id)
+    public void delete(@PathVariable("request-id") Long requestId) {
+        itemRequestService.delete(requestId);
     }
 }
