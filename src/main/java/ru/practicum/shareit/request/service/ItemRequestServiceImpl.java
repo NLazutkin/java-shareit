@@ -74,16 +74,16 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     @Transactional
-    public ItemRequestDto update(Long userId, UpdateRequest request) {
+    public ItemRequestDto update(Long requestId, Long userId, UpdateRequest request) {
         log.debug("Обновляем данные запроса");
 
         User findUser = findUserById(userId);
 
-        if (request.getId() == null) {
+        if (requestId == null) {
             throw new ValidationException("ID запроса должен быть указан");
         }
 
-        ItemRequest updatedItem = ItemRequestMapper.updateItemFields(findById(request.getId()), request, findUser);
+        ItemRequest updatedItem = ItemRequestMapper.updateItemFields(findById(requestId), request, findUser);
         updatedItem = repository.save(updatedItem);
 
         return ItemRequestMapper.mapToItemRequestDto(updatedItem);

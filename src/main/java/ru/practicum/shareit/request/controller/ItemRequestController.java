@@ -16,10 +16,10 @@ import java.util.Collection;
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
     private final ItemRequestServiceImpl itemRequestService;
-    private final String path = "/{id}";
+    private final String id = "/{request-id}";
 
-    @GetMapping(path)
-    public ItemRequestDto findItemRequest(@PathVariable("id") Long requestId) {
+    @GetMapping(id)
+    public ItemRequestDto findItemRequest(@PathVariable("request-id") Long requestId) {
         return itemRequestService.findItemRequest(requestId);
     }
 
@@ -35,14 +35,15 @@ public class ItemRequestController {
         return itemRequestService.create(userId, itemRequest);
     }
 
-    @PutMapping
-    public ItemRequestDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
+    @PutMapping(id)
+    public ItemRequestDto update(@PathVariable("request-id") Long requestId,
+                                 @RequestHeader("X-Sharer-User-Id") Long userId,
                                  @Valid @RequestBody UpdateRequest newItemRequest) {
-        return itemRequestService.update(userId, newItemRequest);
+        return itemRequestService.update(requestId, userId, newItemRequest);
     }
 
-    @DeleteMapping(path)
-    public void delete(@PathVariable("id") Long requestId) {
+    @DeleteMapping(id)
+    public void delete(@PathVariable("request-id") Long requestId) {
         itemRequestService.delete(requestId);
     }
 }

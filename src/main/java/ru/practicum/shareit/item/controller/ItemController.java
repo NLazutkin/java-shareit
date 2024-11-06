@@ -19,7 +19,11 @@ import java.util.Collection;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
-    private final String path = "/{id}";
+    private final String id = "/{item-id}";
+    private final String search = "/search";
+    private final String comment = "/comment";
+    private final String itemComment = id + comment;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,13 +32,13 @@ public class ItemController {
         return itemService.create(ownerId, item);
     }
 
-    @GetMapping(path)
+    @GetMapping(id)
     public AdvancedItemDto findItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                   @PathVariable("id") Long itemId) {
+                                    @PathVariable("item-id") Long itemId) {
         return itemService.findItem(ownerId, itemId);
     }
 
-    @GetMapping("/search")
+    @GetMapping(search)
     public Collection<ItemDto> findItemsForTenant(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                                                   @RequestParam(name = "text", defaultValue = "") String text) {
         return itemService.findItemsForTenant(ownerId, text);
@@ -45,22 +49,22 @@ public class ItemController {
         return itemService.findAll(ownerId);
     }
 
-    @PatchMapping(path)
-    public ItemDto update(@PathVariable("id") Long itemId,
+    @PatchMapping(id)
+    public ItemDto update(@PathVariable("item-id") Long itemId,
                           @Valid @RequestBody UpdateItemRequest newItem,
                           @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         return itemService.update(itemId, newItem, ownerId);
     }
 
-    @DeleteMapping(path)
+    @DeleteMapping(id)
     public void delete(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                          @PathVariable("id") Long itemId) {
+                       @PathVariable("item-id") Long itemId) {
         itemService.delete(ownerId, itemId);
     }
 
-    @PostMapping("/{itemId}/comment")
+    @PostMapping(itemComment)
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto addComment(@PathVariable("itemId") Long itemId,
+    public CommentDto addComment(@PathVariable("item-id") Long itemId,
                                  @RequestHeader("X-Sharer-User-Id") Long userId,
                                  @Valid @RequestBody NewCommentRequest comment) {
         return itemService.addComment(itemId, userId, comment);

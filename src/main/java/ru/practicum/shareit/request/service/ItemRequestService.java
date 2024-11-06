@@ -13,7 +13,7 @@ public interface ItemRequestService {
 
     Collection<ItemRequestDto> findAll();
 
-    ItemRequestDto update(Long user, UpdateRequest request);
+    ItemRequestDto update(Long requestId, Long user, UpdateRequest request);
 
     void delete(Long itemRequestId);
 }
