@@ -11,7 +11,9 @@ public interface ItemRequestService {
 
     ItemRequestDto findItemRequest(Long itemRequestId);
 
-    Collection<ItemRequestDto> findAll();
+    Collection<ItemRequestDto> findAllByRequestorId(Long requestorId);
+
+    Collection<ItemRequestDto> findAllOfAnotherRequestors(Long requestorId);
 
     ItemRequestDto update(Long requestId, Long user, UpdateRequest request);
 

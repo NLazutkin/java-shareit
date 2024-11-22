@@ -68,26 +68,30 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("select b.start " +
             "from Booking as b " +
             "where b.item.id = ?1 " +
-            "and CURRENT_TIMESTAMP < b.start")
-    List<LocalDateTime> findNextBookingStartByItemId(Long itemId);
+            "and b.status = ?2 " +
+            "and ?3 < b.start")
+    List<LocalDateTime> findNextBookingStartByItemId(Long itemId, Statuses status, LocalDateTime currentTimeStamp);
 
     @Query("select b.end " +
             "from Booking as b " +
             "where b.item.id = ?1 " +
-            "and CURRENT_TIMESTAMP > b.end")
-    List<LocalDateTime> findLastBookingEndByItemId(Long itemId);
+            "and b.status = ?2 " +
+            "and ?3 > b.end ")
+    List<LocalDateTime> findLastBookingEndByItemId(Long itemId, Statuses status, LocalDateTime currentTimeStamp);
 
     @Query("select b " +
             "from Booking as b " +
             "where b.item.id in (?1) " +
-            "and CURRENT_TIMESTAMP > b.end " +
+            "and b.status = ?2 " +
+            "and ?3 > b.end " +
             "order by b.end DESC")
-    List<Booking> findByItemInAndEndBefore(List<Long> ids);
+    List<Booking> findByItemInAndEndBefore(List<Long> ids, Statuses status, LocalDateTime currentTimeStamp);
 
     @Query("select b " +
             "from Booking as b " +
             "where b.item.id in (?1) " +
-            "and CURRENT_TIMESTAMP < b.start " +
+            "and b.status = ?2 " +
+            "and ?3 < b.start " +
             "order by b.end ASC")
-    List<Booking> findByItemInAndStartAfter(List<Long> ids);
+    List<Booking> findByItemInAndStartAfter(List<Long> ids, Statuses status, LocalDateTime currentTimeStamp);
 }

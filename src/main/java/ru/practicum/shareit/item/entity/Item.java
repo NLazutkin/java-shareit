@@ -32,8 +32,6 @@ public class Item {
     @JoinColumn(name = "owner_id")
     User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
     @JoinColumn(name = "request_id")
-    ItemRequest request;
+    Long requestId;
 }

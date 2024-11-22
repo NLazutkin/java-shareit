@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.entity.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.enums.Statuses;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotItemOwnerException;
 import ru.practicum.shareit.exception.ValidationException;
@@ -63,28 +64,29 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException(String.format("Владелец вещи c ID %d не найден", userId)));
     }
 
-    private Optional<LocalDateTime> getLastBookingEndDate(Long itemId) {
-        return bookingRepository.findLastBookingEndByItemId(itemId)
+    private Optional<LocalDateTime> getLastBookingEndDate(Long itemId, LocalDateTime now) {
+        return bookingRepository.findLastBookingEndByItemId(itemId, Statuses.APPROVED, now)
                 .stream()
                 .max(Comparator.naturalOrder());
     }
 
-    private Optional<LocalDateTime> getNextBookingStartDate(Long itemId) {
-        return bookingRepository.findNextBookingStartByItemId(itemId)
+    private Optional<LocalDateTime> getNextBookingStartDate(Long itemId, LocalDateTime now) {
+        return bookingRepository.findNextBookingStartByItemId(itemId, Statuses.APPROVED, now)
                 .stream()
                 .min(Comparator.naturalOrder());
     }
 
     private List<AdvancedItemDto> fillItemData(List<Item> userItems) {
+        LocalDateTime now = LocalDateTime.now();
         List<Long> itemIds = userItems.stream().map(Item::getId).toList();
 
         Map<Item, LocalDateTime> lastItemBookingEndDate = bookingRepository
-                .findByItemInAndEndBefore(itemIds)
+                .findByItemInAndEndBefore(itemIds, Statuses.APPROVED, now)
                 .stream()
                 .collect(Collectors.toMap(Booking::getItem, Booking::getEnd));
 
         Map<Item, LocalDateTime> nextItemBookingStartDate = bookingRepository
-                .findByItemInAndStartAfter(itemIds)
+                .findByItemInAndStartAfter(itemIds, Statuses.APPROVED, now)
                 .stream()
                 .collect(Collectors.toMap(Booking::getItem, Booking::getStart));
 
@@ -138,11 +140,13 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Получаем записи о вещи с ID{}", itemId);
         Item item = findById(itemId);
 
+        LocalDateTime now = LocalDateTime.now();
+
         if (item.getUser().getId().equals(ownerId)) {
             return ItemMapper.mapToAdvancedItemDto(findById(itemId),
                     commentRepository.findAllByItemId(itemId),
-                    getLastBookingEndDate(itemId),
-                    getNextBookingStartDate(itemId));
+                    getLastBookingEndDate(itemId, now),
+                    getNextBookingStartDate(itemId, now));
         }
 
         return ItemMapper.mapToAdvancedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));

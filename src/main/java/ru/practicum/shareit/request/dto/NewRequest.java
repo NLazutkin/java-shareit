@@ -15,9 +15,6 @@ public class NewRequest {
     @NotBlank(message = "Запрос не должен быть пустым")
     String description;
 
-    @NotNull(message = "ID пользователя составившего заявку не может не может быть пустым")
     @Positive(message = "ID пользователя составившего заявку не может не может быть отрицательным числом")
     Long requestorId;
-
-    LocalDateTime created;
 }
