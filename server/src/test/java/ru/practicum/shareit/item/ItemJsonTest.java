@@ -10,7 +10,6 @@ import ru.practicum.shareit.item.dto.AdvancedItemDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +23,7 @@ public class ItemJsonTest {
     private JacksonTester<ItemDto> itemJson;
 
     @Test
-    void testItemRequestDto() throws Exception {
+    void testItemDto() throws Exception {
         final ItemDto itemDto = new ItemDto(1L, "name", "description", Boolean.TRUE, 2L, 2L);
 
         JsonContent<ItemDto> result = itemJson.write(itemDto);
@@ -38,7 +37,7 @@ public class ItemJsonTest {
     }
 
     @Test
-    void testResponseDto() throws Exception {
+    void testCommentsDto() throws Exception {
         final LocalDateTime now = LocalDateTime.now();
         final LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
 
@@ -53,6 +52,8 @@ public class ItemJsonTest {
         assertThat(result).extractingJsonPathStringValue("$.name").isEqualTo(responseDto.getName());
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo(responseDto.getDescription());
         assertThat(result).extractingJsonPathBooleanValue("$.available").isEqualTo(responseDto.getAvailable());
+        assertThat(result).extractingJsonPathStringValue("$.lastBooking").isNotBlank();
+        assertThat(result).extractingJsonPathStringValue("$.nextBooking").isNotBlank();
         assertThat(result).extractingJsonPathNumberValue("$.ownerId").isEqualTo(1);
         assertThat(result).extractingJsonPathNumberValue("$.requestId").isEqualTo(1);
         assertThat(result).extractingJsonPathValue("$.comments[0].id").isEqualTo(1);

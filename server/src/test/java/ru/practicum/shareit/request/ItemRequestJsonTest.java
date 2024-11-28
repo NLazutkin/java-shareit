@@ -9,7 +9,6 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ResponseDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +34,7 @@ public class ItemRequestJsonTest {
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo(itemRequestDto.getDescription());
         assertThat(result).extractingJsonPathNumberValue("$.requestorId").isEqualTo(1);
+        assertThat(result).extractingJsonPathStringValue("$.created").isNotBlank();
         assertThat(result).extractingJsonPathValue("$.items[0].id").isEqualTo(1);
         assertThat(result).extractingJsonPathStringValue("$.items[0].name").isEqualTo(responseDto.getName());
     }
