@@ -48,11 +48,11 @@ public final class ItemRequestMapper {
         return dto;
     }
 
-    public static ItemRequest mapToItemRequest(NewRequest request, User findUser) {
+    public static ItemRequest mapToItemRequest(NewRequest request, User findUser, LocalDateTime now) {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setDescription(request.getDescription());
         itemRequest.setRequestor(findUser);
-        itemRequest.setCreated(LocalDateTime.now());
+        itemRequest.setCreated(now);
 
         return itemRequest;
     }

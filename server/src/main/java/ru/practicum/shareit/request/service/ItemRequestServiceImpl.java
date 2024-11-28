@@ -19,6 +19,7 @@ import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -81,7 +82,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
         User findUser = findUserById(userId);
 
-        ItemRequest itemRequest = ItemRequestMapper.mapToItemRequest(request, findUser);
+        ItemRequest itemRequest = ItemRequestMapper.mapToItemRequest(request, findUser, LocalDateTime.now());
         itemRequest = repository.save(itemRequest);
 
         return ItemRequestMapper.mapToItemRequestDto(itemRequest);
@@ -132,10 +133,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
         if (request.getId() == null) {
             throw new ValidationException("ID запроса должен быть указан");
-        }
-
-        if (!findUser.getId().equals(userId)) {
-            throw new ValidationException("Только создатель запроса может редактировать данные о запросе");
         }
 
         ItemRequest updatedItem = ItemRequestMapper.updateItemFields(findById(request.getId()), request, findUser);

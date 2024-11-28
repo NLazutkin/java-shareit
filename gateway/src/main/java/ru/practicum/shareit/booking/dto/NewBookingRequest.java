@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking.dto;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -14,10 +12,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewBookingRequest {
 
-    @FutureOrPresent(message = "Нельзя начать бронирование раньше текущего дня!")
     LocalDateTime start;
 
-    @Future(message = "Нельзя закончить бронирование в этот же день или раньше!")
     LocalDateTime end;
 
     @NotNull(message = "У искомой вещи должен быть ID")

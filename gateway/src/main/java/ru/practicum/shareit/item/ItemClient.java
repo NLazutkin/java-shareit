@@ -53,7 +53,7 @@ public class ItemClient extends BaseClient {
     }
 
     public ResponseEntity<Object> updateItem(Long itemId, Long userId, UpdateItemRequest requestDto) {
-        return put("/" + itemId, userId, null, requestDto);
+        return patch("/" + itemId, userId, null, requestDto);
     }
 
     public ResponseEntity<Object> deleteItem(Long itemId, Long userId) {

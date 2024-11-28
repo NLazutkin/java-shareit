@@ -23,6 +23,7 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -99,7 +100,7 @@ public class BookingServiceImpl implements BookingService {
     public Collection<BookingDto> findAllBookingsByUser(Long userId, String state) {
         States currentState = States.valueOf(state);
         User findUser = findUserById(userId);
-        Collection<Booking> bookingList;
+        Collection<Booking> bookingList = new ArrayList<>();
 
         switch (currentState) {
             case ALL:
@@ -126,8 +127,6 @@ public class BookingServiceImpl implements BookingService {
                 bookingList = repository.findAllByBookerIdAndStatus(userId, Statuses.REJECTED);
                 log.debug("Получаем записи об отклоненных бронированиях пользователя");
                 break;
-            default:
-                throw new ValidationException("Не верно указан параметр state");
         }
 
         return bookingList.stream()
@@ -141,7 +140,7 @@ public class BookingServiceImpl implements BookingService {
     public Collection<BookingDto> findAllBookingsByOwnerItems(Long userId, String state) {
         States currentState = States.valueOf(state);
         User findUser = findUserById(userId);
-        Collection<Booking> bookingList;
+        Collection<Booking> bookingList = new ArrayList<>();
 
         switch (currentState) {
             case ALL:
@@ -168,8 +167,6 @@ public class BookingServiceImpl implements BookingService {
                 bookingList = repository.findAllByOwnerIdAndStatus(userId, Statuses.REJECTED);
                 log.debug("Получаем записи об отклоненных бронированиях вещей пользователя");
                 break;
-            default:
-                throw new ValidationException("Не верно указан параметр state");
         }
 
         return bookingList.stream()

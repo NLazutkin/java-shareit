@@ -1,14 +1,14 @@
 package ru.practicum.shareit.booking.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.enums.Statuses;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateBookingRequest {
@@ -17,7 +17,7 @@ public class UpdateBookingRequest {
     LocalDateTime end;
     Long itemId;
     Statuses status;
-    Long bookerId; // userId
+    Long bookerId;
 
     public boolean hasStart() {
         return this.start != null;

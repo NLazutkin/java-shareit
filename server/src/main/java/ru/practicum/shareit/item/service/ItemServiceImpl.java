@@ -199,7 +199,6 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public void delete(Long ownerId, Long itemId) {
         Item item = findById(itemId);
-
         User findUser = findUserById(ownerId);
 
         if (!findUser.getId().equals(ownerId)) {
@@ -213,12 +212,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public CommentDto addComment(Long itemId, Long userId, NewCommentRequest request) {
-        log.debug("Создаем комментарий к вещи");
+        log.info("Создаем комментарий к вещи");
 
         User findUser = findUserById(userId);
         Item findItem = findById(itemId);
 
-        if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())) {
+        LocalDateTime current = LocalDateTime.now(); //.plusHours(3);
+        if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(userId, itemId, current)) {
             throw new ValidationException(String.format("Пользователь %s не может оставить комментарий, " +
                     "так как не пользовался вещью %s", findUser.getName(), findItem.getName()));
         }

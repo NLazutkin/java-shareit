@@ -44,6 +44,9 @@ public class ItemMapper {
         lastBooking.ifPresent(dto::setLastBooking);
         nextBooking.ifPresent(dto::setNextBooking);
         dto.setComments(comments.stream().map(CommentMapper::mapToCommentDto).toList());
+        if (item.getRequestId() != null) {
+            dto.setRequestId(item.getRequestId());
+        }
 
         return dto;
     }

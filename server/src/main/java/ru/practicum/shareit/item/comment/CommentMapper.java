@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.comment.dto.CommentDto;
 import ru.practicum.shareit.item.comment.dto.NewCommentRequest;
-import ru.practicum.shareit.item.comment.dto.UpdateCommentRequest;
 import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.user.entity.User;
 
@@ -32,11 +31,4 @@ public class CommentMapper {
 
         return comment;
     }
-
-    public static Comment updateComment(Comment comment, UpdateCommentRequest request) {
-        comment.setText(request.getText());
-
-        return comment;
-    }
-
 }

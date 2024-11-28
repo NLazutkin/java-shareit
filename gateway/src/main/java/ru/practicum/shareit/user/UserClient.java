@@ -11,8 +11,6 @@ import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserRequest;
 
-import java.util.Map;
-
 @Service
 public class UserClient extends BaseClient {
     private static final String API_PREFIX = "/users";

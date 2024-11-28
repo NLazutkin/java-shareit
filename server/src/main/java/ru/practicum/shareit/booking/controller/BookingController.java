@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.NewBookingRequest;
 import ru.practicum.shareit.booking.dto.UpdateBookingRequest;
-import ru.practicum.shareit.booking.service.BookingServiceImpl;
+import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.dto.BookingDto;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping(path = "/bookings")
 public class BookingController {
-    private final BookingServiceImpl bookingService;
+    private final BookingService bookingService;
     private final String id = "/{booking-id}";
     private final String owner = "/owner";
 
