@@ -33,10 +33,10 @@ public class BookingJsonTest {
         JsonContent<BookingDto> result = bookingJson.write(bookingDto);
 
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
-        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo(bookingDto.getStart()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
-        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo(bookingDto.getEnd()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
+        assertThat(result).extractingJsonPathStringValue("$.start")
+                .hasSameHashCodeAs(bookingDto.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
+        assertThat(result).extractingJsonPathStringValue("$.end")
+                .hasSameHashCodeAs(bookingDto.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
         assertThat(result).extractingJsonPathStringValue("$.status").isEqualTo(bookingDto.getStatus().toString());
         assertThat(result).extractingJsonPathNumberValue("$.item.id").isEqualTo(1);
         assertThat(result).extractingJsonPathStringValue("$.item.name").isEqualTo(itemDto.getName());
