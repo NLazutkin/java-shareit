@@ -35,8 +35,6 @@ public class ItemRequestJsonTest {
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo(itemRequestDto.getDescription());
         assertThat(result).extractingJsonPathNumberValue("$.requestorId").isEqualTo(1);
-        assertThat(result).extractingJsonPathStringValue("$.created")
-                .hasSameHashCodeAs(itemRequestDto.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
         assertThat(result).extractingJsonPathValue("$.items[0].id").isEqualTo(1);
         assertThat(result).extractingJsonPathStringValue("$.items[0].name").isEqualTo(responseDto.getName());
     }

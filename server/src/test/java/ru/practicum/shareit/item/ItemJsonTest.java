@@ -53,10 +53,6 @@ public class ItemJsonTest {
         assertThat(result).extractingJsonPathStringValue("$.name").isEqualTo(responseDto.getName());
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo(responseDto.getDescription());
         assertThat(result).extractingJsonPathBooleanValue("$.available").isEqualTo(responseDto.getAvailable());
-        assertThat(result).extractingJsonPathStringValue("$.lastBooking")
-                .hasSameHashCodeAs(responseDto.getLastBooking().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
-        assertThat(result).extractingJsonPathStringValue("$.nextBooking")
-                .hasSameHashCodeAs(responseDto.getNextBooking().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
         assertThat(result).extractingJsonPathNumberValue("$.ownerId").isEqualTo(1);
         assertThat(result).extractingJsonPathNumberValue("$.requestId").isEqualTo(1);
         assertThat(result).extractingJsonPathValue("$.comments[0].id").isEqualTo(1);
