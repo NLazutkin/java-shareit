@@ -36,6 +36,9 @@ class ItemRequestControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private final String urlTemplate = "/requests";
+    private final String headerUserId = "X-Sharer-User-Id";
+
     private ItemRequestDto makeItemRequestDto(Long id, String description, Long requestorId, LocalDateTime date,
                                               List<ResponseDto> items) {
         ItemRequestDto dto = new ItemRequestDto();
@@ -65,11 +68,11 @@ class ItemRequestControllerTest {
 
         when(itemRequestService.create(anyLong(), any())).thenReturn(requestDto);
 
-        mvc.perform(post("/requests")
+        mvc.perform(post(urlTemplate)
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").exists())
@@ -89,7 +92,7 @@ class ItemRequestControllerTest {
 
         when(itemRequestService.findItemRequest(anyLong())).thenReturn(requestDto);
 
-        mvc.perform(get("/requests" + "/" + requestDto.getId())
+        mvc.perform(get(urlTemplate + "/" + requestDto.getId())
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -109,9 +112,9 @@ class ItemRequestControllerTest {
 
         when(itemRequestService.findAllByRequestorId(anyLong())).thenReturn(newRequests);
 
-        mvc.perform(get("/requests")
+        mvc.perform(get(urlTemplate)
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -135,9 +138,9 @@ class ItemRequestControllerTest {
 
         when(itemRequestService.findAllOfAnotherRequestors(anyLong())).thenReturn(newRequests);
 
-        mvc.perform(get("/requests/all")
+        mvc.perform(get(urlTemplate + "/all")
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -157,10 +160,10 @@ class ItemRequestControllerTest {
 
         when(itemRequestService.update(anyLong(), any())).thenReturn(requestDto);
 
-        mvc.perform(put("/requests")
+        mvc.perform(put(urlTemplate)
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -170,7 +173,7 @@ class ItemRequestControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        mvc.perform(delete("/requests" + "/" + anyLong()))
+        mvc.perform(delete(urlTemplate + "/" + anyLong()))
                 .andExpect(status().isOk());
 
         verify(itemRequestService, times(1)).delete(anyLong());

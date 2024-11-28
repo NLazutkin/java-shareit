@@ -37,6 +37,8 @@ class UserControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private final String urlTemplate = "/users";
+
     private UserDto makeUserDto(Long id, String email, String name, LocalDate date) {
         UserDto dto = new UserDto();
         dto.setId(id);
@@ -53,7 +55,7 @@ class UserControllerTest {
 
         when(userService.create(any())).thenReturn(userDto);
 
-        mvc.perform(post("/users")
+        mvc.perform(post(urlTemplate)
                         .content(mapper.writeValueAsString(userDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -73,7 +75,7 @@ class UserControllerTest {
 
         when(userService.findUser(anyLong())).thenReturn(findUser);
 
-        mvc.perform(get("/users" + "/" + findUser.getId())
+        mvc.perform(get(urlTemplate + "/" + findUser.getId())
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -94,7 +96,7 @@ class UserControllerTest {
 
         when(userService.getUsers()).thenReturn(newUsers);
 
-        mvc.perform(get("/users")
+        mvc.perform(get(urlTemplate)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -120,7 +122,7 @@ class UserControllerTest {
 
         when(userService.update(anyLong(), any())).thenReturn(userDto);
 
-        mvc.perform(patch("/users" + "/" + userDto.getId())
+        mvc.perform(patch(urlTemplate + "/" + userDto.getId())
                         .content(mapper.writeValueAsString(userDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,7 +138,7 @@ class UserControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        mvc.perform(delete("/users" + "/" + anyLong()))
+        mvc.perform(delete(urlTemplate + "/" + anyLong()))
                 .andExpect(status().isOk());
 
         verify(userService, times(1)).delete(anyLong());

@@ -24,50 +24,52 @@ public class ItemController {
     private final String comment = "/comment";
     private final String itemComment = id + comment;
 
+    private final String headerUserId = "X-Sharer-User-Id";
+    private final String pvItemId = "item-id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public ResponseEntity<Object> addItem(@RequestHeader(headerUserId) Long ownerId,
                                           @Valid @RequestBody NewItemRequest item) {
         return itemClient.addItem(ownerId, item);
     }
 
     @GetMapping(id)
-    public ResponseEntity<Object> findItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                           @PathVariable("item-id") Long itemId) {
+    public ResponseEntity<Object> findItem(@RequestHeader(headerUserId) Long ownerId,
+                                           @PathVariable(pvItemId) Long itemId) {
         return itemClient.getItem(ownerId, itemId);
     }
 
     @GetMapping(search)
-    public ResponseEntity<Object> findItemsForTenant(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public ResponseEntity<Object> findItemsForTenant(@RequestHeader(headerUserId) Long ownerId,
                                                      @RequestParam(name = "text", defaultValue = "") String text) {
         return itemClient.getItems(search, ownerId, text);
     }
 
     @GetMapping
-    public ResponseEntity<Object> findAll(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public ResponseEntity<Object> findAll(@RequestHeader(headerUserId) Long ownerId) {
         return itemClient.getItems(null, ownerId, null);
     }
 
     @PatchMapping(id)
-    public ResponseEntity<Object> updateItem(@PathVariable("item-id") Long itemId,
+    public ResponseEntity<Object> updateItem(@PathVariable(pvItemId) Long itemId,
                                              @Valid @RequestBody UpdateItemRequest newItem,
-                                             @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                                             @RequestHeader(headerUserId) Long ownerId) {
         return itemClient.updateItem(itemId, ownerId, newItem);
     }
 
     @DeleteMapping(id)
-    public ResponseEntity<Object> deleteItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                             @PathVariable("item-id") Long itemId) {
+    public ResponseEntity<Object> deleteItem(@RequestHeader(headerUserId) Long ownerId,
+                                             @PathVariable(pvItemId) Long itemId) {
         return itemClient.deleteItem(itemId, ownerId);
     }
 
     @PostMapping(itemComment)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addComment(@PathVariable("item-id") Long itemId,
-                                             @RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> addComment(@PathVariable(pvItemId) Long itemId,
+                                             @RequestHeader(headerUserId) Long userId,
                                              @Valid @RequestBody NewCommentRequest comment) {
-        log.info("Add comment to item with Id={}, of user with Id={} (gateway)", itemId, userId);
+        log.info("Add comment to item with Id={}, of user with Id={}", itemId, userId);
         return itemClient.addComment("/" + itemId + this.comment, userId, comment);
     }
 }

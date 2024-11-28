@@ -39,6 +39,9 @@ class BookingControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private final String urlTemplate = "/bookings";
+    private final String headerUserId = "X-Sharer-User-Id";
+
     private ItemDto makeItemDto(Long id, String name, String description, Boolean available, Long ownerId, Long requestId) {
         ItemDto dto = new ItemDto();
         dto.setId(id);
@@ -82,11 +85,11 @@ class BookingControllerTest {
 
         when(bookingService.create(anyLong(), any())).thenReturn(requestDto);
 
-        mvc.perform(post("/bookings")
+        mvc.perform(post(urlTemplate)
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").exists())
@@ -102,9 +105,9 @@ class BookingControllerTest {
 
         when(bookingService.findBooking(anyLong(), anyLong())).thenReturn(requestDto);
 
-        mvc.perform(get("/bookings" + "/" + requestDto.getId())
+        mvc.perform(get(urlTemplate + "/" + requestDto.getId())
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -132,10 +135,10 @@ class BookingControllerTest {
 
         when(bookingService.findAllBookingsByUser(anyLong(), any())).thenReturn(newRequests);
 
-        mvc.perform(get("/bookings")
+        mvc.perform(get(urlTemplate)
                         .characterEncoding(StandardCharsets.UTF_8)
                         //
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -160,9 +163,9 @@ class BookingControllerTest {
 
         when(bookingService.findAllBookingsByOwnerItems(anyLong(), anyString())).thenReturn(newRequests);
 
-        mvc.perform(get("/bookings/owner")
+        mvc.perform(get(urlTemplate + "/owner")
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -183,10 +186,10 @@ class BookingControllerTest {
 
         when(bookingService.update(anyLong(), any())).thenReturn(requestDto);
 
-        mvc.perform(put("/bookings")
+        mvc.perform(put(urlTemplate)
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -196,7 +199,7 @@ class BookingControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        mvc.perform(delete("/bookings" + "/" + anyLong()))
+        mvc.perform(delete(urlTemplate + "/" + anyLong()))
                 .andExpect(status().isOk());
 
         verify(bookingService, times(1)).delete(anyLong());
@@ -211,10 +214,10 @@ class BookingControllerTest {
 
         when(bookingService.approveBooking(anyLong(), anyLong(), any())).thenReturn(requestDto);
 
-        mvc.perform(patch("/bookings/" + requestDto.getId())
+        mvc.perform(patch(urlTemplate + "/" + requestDto.getId())
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

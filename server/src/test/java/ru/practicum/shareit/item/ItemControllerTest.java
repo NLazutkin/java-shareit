@@ -37,6 +37,9 @@ class ItemControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private final String urlTemplate = "/items";
+    private final String headerUserId = "X-Sharer-User-Id";
+
     private ItemDto makeItemDto(Long id, String name, String description, Boolean available, Long ownerId, Long requestId) {
         ItemDto dto = new ItemDto();
         dto.setId(id);
@@ -83,11 +86,11 @@ class ItemControllerTest {
 
         when(itemService.create(anyLong(), any())).thenReturn(requestDto);
 
-        mvc.perform(post("/items")
+        mvc.perform(post(urlTemplate)
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").exists())
@@ -102,9 +105,9 @@ class ItemControllerTest {
 
         when(itemService.findItem(anyLong(), anyLong())).thenReturn(requestDto);
 
-        mvc.perform(get("/items" + "/" + requestDto.getId())
+        mvc.perform(get(urlTemplate + "/" + requestDto.getId())
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -128,9 +131,9 @@ class ItemControllerTest {
 
         when(itemService.findAll(anyLong())).thenReturn(newRequests);
 
-        mvc.perform(get("/items")
+        mvc.perform(get(urlTemplate)
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -151,9 +154,9 @@ class ItemControllerTest {
 
         when(itemService.findItemsForTenant(anyLong(), anyString())).thenReturn(newRequests);
 
-        mvc.perform(get("/items/search")
+        mvc.perform(get(urlTemplate + "/search")
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -171,10 +174,10 @@ class ItemControllerTest {
 
         when(itemService.update(anyLong(), any(), anyLong())).thenReturn(requestDto);
 
-        mvc.perform(patch("/items/" + requestDto.getId())
+        mvc.perform(patch(urlTemplate + "/" + requestDto.getId())
                         .content(mapper.writeValueAsString(requestDto))
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -184,8 +187,8 @@ class ItemControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        mvc.perform(delete("/items" + "/" + anyLong())
-                        .header("X-Sharer-User-Id", anyLong()))
+        mvc.perform(delete(urlTemplate + "/" + anyLong())
+                        .header(headerUserId, anyLong()))
                 .andExpect(status().isOk());
 
         verify(itemService, times(1)).delete(anyLong(), anyLong());
@@ -197,10 +200,10 @@ class ItemControllerTest {
 
         when(itemService.addComment(anyLong(), anyLong(), any())).thenReturn(comment);
 
-        mvc.perform(post("/items/" + comment.getId() + "/comment")
+        mvc.perform(post(urlTemplate + "/" + comment.getId() + "/comment")
                         .content(mapper.writeValueAsString(comment))
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(headerUserId, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())

@@ -17,6 +17,8 @@ public class UserController {
     private final UserService userService;
     private final String id = "/{user-id}";
 
+    private final String pvUserId = "user-id";
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@RequestBody NewUserRequest user) {
@@ -24,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping(id)
-    public UserDto findUser(@PathVariable("user-id") Long userId) {
+    public UserDto findUser(@PathVariable(pvUserId) Long userId) {
         return userService.findUser(userId);
     }
 
@@ -34,13 +36,13 @@ public class UserController {
     }
 
     @PatchMapping(id)
-    public UserDto update(@PathVariable("user-id") Long userId,
+    public UserDto update(@PathVariable(pvUserId) Long userId,
                           @RequestBody UpdateUserRequest newUser) {
         return userService.update(userId, newUser);
     }
 
     @DeleteMapping(id)
-    public void delete(@PathVariable("user-id") Long userId) {
+    public void delete(@PathVariable(pvUserId) Long userId) {
         userService.delete(userId);
     }
 }

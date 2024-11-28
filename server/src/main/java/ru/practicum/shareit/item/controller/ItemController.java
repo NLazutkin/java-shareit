@@ -25,48 +25,50 @@ public class ItemController {
     private final String comment = "/comment";
     private final String itemComment = id + comment;
 
+    private final String headerUserId = "X-Sharer-User-Id";
+    private final String pvItemId = "item-id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public ItemDto create(@RequestHeader(headerUserId) Long ownerId,
                           @RequestBody NewItemRequest item) {
         return itemService.create(ownerId, item);
     }
 
     @GetMapping(id)
-    public AdvancedItemDto findItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                    @PathVariable("item-id") Long itemId) {
+    public AdvancedItemDto findItem(@RequestHeader(headerUserId) Long ownerId,
+                                    @PathVariable(pvItemId) Long itemId) {
         return itemService.findItem(ownerId, itemId);
     }
 
     @GetMapping(search)
-    public Collection<ItemDto> findItemsForTenant(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public Collection<ItemDto> findItemsForTenant(@RequestHeader(headerUserId) Long ownerId,
                                                   @RequestParam(name = "text", defaultValue = "") String text) {
         return itemService.findItemsForTenant(ownerId, text);
     }
 
     @GetMapping
-    public Collection<AdvancedItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public Collection<AdvancedItemDto> findAll(@RequestHeader(headerUserId) Long ownerId) {
         return itemService.findAll(ownerId);
     }
 
     @PatchMapping(id)
-    public ItemDto update(@PathVariable("item-id") Long itemId,
+    public ItemDto update(@PathVariable(pvItemId) Long itemId,
                           @RequestBody UpdateItemRequest newItem,
-                          @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                          @RequestHeader(headerUserId) Long ownerId) {
         return itemService.update(itemId, newItem, ownerId);
     }
 
     @DeleteMapping(id)
-    public void delete(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                       @PathVariable("item-id") Long itemId) {
+    public void delete(@RequestHeader(headerUserId) Long ownerId,
+                       @PathVariable(pvItemId) Long itemId) {
         itemService.delete(ownerId, itemId);
     }
 
     @PostMapping(itemComment)
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto addComment(@PathVariable("item-id") Long itemId,
-                                 @RequestHeader("X-Sharer-User-Id") Long userId,
+    public CommentDto addComment(@PathVariable(pvItemId) Long itemId,
+                                 @RequestHeader(headerUserId) Long userId,
                                  @RequestBody NewCommentRequest comment) {
         log.info("Add comment to item with Id={}, of user with Id={} (server)", itemId, userId);
         return itemService.addComment(itemId, userId, comment);

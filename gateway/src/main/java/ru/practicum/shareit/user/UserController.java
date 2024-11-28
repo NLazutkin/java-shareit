@@ -20,6 +20,8 @@ public class UserController {
     private final UserClient userClient;
     private final String id = "/{user-id}";
 
+    private final String pvUserId = "user-id";
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> addUser(@Valid @RequestBody NewUserRequest newUser) {
@@ -27,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping(id)
-    public ResponseEntity<Object> findUser(@PathVariable("user-id") Long userId) {
+    public ResponseEntity<Object> findUser(@PathVariable(pvUserId) Long userId) {
         return userClient.getUser(userId);
     }
 
@@ -37,13 +39,13 @@ public class UserController {
     }
 
     @PatchMapping(id)
-    public ResponseEntity<Object> updateUser(@PathVariable("user-id") Long userId,
+    public ResponseEntity<Object> updateUser(@PathVariable(pvUserId) Long userId,
                                              @Valid @RequestBody UpdateUserRequest newUser) {
         return userClient.updateUser(userId, newUser);
     }
 
     @DeleteMapping(id)
-    public ResponseEntity<Object> deleteUser(@PathVariable("user-id") Long userId) {
+    public ResponseEntity<Object> deleteUser(@PathVariable(pvUserId) Long userId) {
         return userClient.deleteUser(userId);
     }
 }
